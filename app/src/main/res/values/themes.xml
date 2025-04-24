@@ -1,0 +1,26 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.DicodingEvent" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="toolbarStyle">@color/muted_blue_violet</item>
+        <item name="colorPrimary">@color/muted_blue_violet</item>
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="windowActionBar">false</item>
+
+        <item name="colorPrimaryContainer">@color/muted_blue_violet</item>
+
+        <item name="android:navigationBarColor">@color/black</item>"
+
+        <!-- Text colors -->
+        <item name="android:textColorPrimary">@color/white</item>
+
+        <!-- Status bar color -->
+        <item name="android:statusBarColor">@color/muted_blue_violet</item>
+
+        
+    </style>
+
+
+
+
+</resources>
