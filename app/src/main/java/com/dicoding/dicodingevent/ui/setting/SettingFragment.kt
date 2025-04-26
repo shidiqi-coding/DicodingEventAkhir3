@@ -5,6 +5,7 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -20,11 +21,11 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
     private lateinit var viewModel: SettingViewModel
     private lateinit var switchDailyReminder: SwitchMaterial
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view: View , savedInstanceState: Bundle?) {
+        super.onViewCreated(view , savedInstanceState)
 
         viewModel = ViewModelProvider(
-            this,
+            this ,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[SettingViewModel::class.java]
 
@@ -49,7 +50,7 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
             showAppearanceDialog()
         }
 
-        switchDailyReminder.setOnCheckedChangeListener { _, isChecked ->
+        switchDailyReminder.setOnCheckedChangeListener { _ , isChecked ->
             viewModel.setDailyReminderState(isChecked)
             if (isChecked) {
                 startDailyReminderWorker()
@@ -60,27 +61,39 @@ class SettingFragment : Fragment(R.layout.fragment_setting) {
     }
 
     private fun showAppearanceDialog() {
-        val options = arrayOf("Use device Theme", "Light theme", "Dark Theme")
+        val options = arrayOf("Use device Theme" , "Light theme" , "Dark Theme")
         val checkedItem = viewModel.themeChoice.value ?: 0
 
-        AlertDialog.Builder(requireContext())
+        val dialog = AlertDialog.Builder(requireContext())
             .setTitle("Choose Appearance")
-            .setSingleChoiceItems(options, checkedItem) { dialog, which ->
+            .setSingleChoiceItems(options , checkedItem) { dialog , which ->
                 viewModel.setThemeChoice(which)
                 dialog.dismiss()
             }
-            .setNegativeButton("Cancel", null)
-            .show()
+            .setNegativeButton("Cancel" , null)
+            .create()
+        dialog.setOnShowListener {
+            val cancelButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+            cancelButton.setTextColor(
+                ContextCompat.getColor(
+                    requireContext() ,
+                    R.color.cancel_button_color
+                )
+            )
+        }
+        dialog.show()
     }
 
     private fun startDailyReminderWorker() {
-        val workRequest = PeriodicWorkRequestBuilder<DailyReminderWorker>(1, TimeUnit.DAYS,
-            15, TimeUnit.MINUTES )
+        val workRequest = PeriodicWorkRequestBuilder<DailyReminderWorker>(
+            1 , TimeUnit.DAYS ,
+            15 , TimeUnit.MINUTES
+        )
             .build()
 
         WorkManager.getInstance(requireContext()).enqueueUniquePeriodicWork(
-            "daily_reminder_worker",
-            ExistingPeriodicWorkPolicy.UPDATE,
+            "daily_reminder_worker" ,
+            ExistingPeriodicWorkPolicy.UPDATE ,
             workRequest
         )
     }
