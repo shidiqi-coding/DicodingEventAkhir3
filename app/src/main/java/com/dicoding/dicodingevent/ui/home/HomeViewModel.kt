@@ -28,18 +28,21 @@ class HomeViewModel(private val repository: EventRepository) : ViewModel() {
     val errorMessage: LiveData<String> = _errorMessage
 
     fun loadUpcomingEvents(query: String? = null) {
-        loadEventsUpcoming(active = 1, query, _upcomingEvent)
+        loadEventsUpcoming(query , _upcomingEvent)
     }
 
     fun loadFinishedEvents(query: String? = null) {
-        loadEventsFinished(active = 0, query,_finishedEvent)
+        loadEventsFinished(query , _finishedEvent)
     }
 
-    private fun loadEventsUpcoming(active: Int, query: String?,liveData: MutableLiveData<List<ListEventsItem>>) {
+    private fun loadEventsUpcoming(
+        query: String? ,
+        liveData: MutableLiveData<List<ListEventsItem>>
+    ) {
         _isLoadingUpcoming.value = true
 
-        repository.getEventsCallback(active, query).enqueue(object : Callback<EventResponse> {
-            override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
+        repository.getUpcomingEventsCallback(query).enqueue(object : Callback<EventResponse> {
+            override fun onResponse(call: Call<EventResponse> , response: Response<EventResponse>) {
                 _isLoadingUpcoming.value = false
                 if (response.isSuccessful) {
                     liveData.value = response.body()?.listEvents
@@ -49,7 +52,7 @@ class HomeViewModel(private val repository: EventRepository) : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<EventResponse>, t: Throwable) {
+            override fun onFailure(call: Call<EventResponse> , t: Throwable) {
                 _isLoadingUpcoming.value = false
                 _errorMessage.value = "Network error: ${t.message}"
             }
@@ -57,12 +60,14 @@ class HomeViewModel(private val repository: EventRepository) : ViewModel() {
     }
 
 
-
-    private fun loadEventsFinished(active: Int, query: String?, liveData: MutableLiveData<List<ListEventsItem>>) {
+    private fun loadEventsFinished(
+        query: String? ,
+        liveData: MutableLiveData<List<ListEventsItem>>
+    ) {
         _isLoadingFinished.value = true
 
-        repository.getEventsCallback(active, query).enqueue(object : Callback<EventResponse> {
-            override fun onResponse(call: Call<EventResponse>, response: Response<EventResponse>) {
+        repository.getFinishedEventsCallback(query).enqueue(object : Callback<EventResponse> {
+            override fun onResponse(call: Call<EventResponse> , response: Response<EventResponse>) {
                 _isLoadingFinished.value = false
                 if (response.isSuccessful) {
                     liveData.value = response.body()?.listEvents
@@ -72,7 +77,7 @@ class HomeViewModel(private val repository: EventRepository) : ViewModel() {
                 }
             }
 
-            override fun onFailure(call: Call<EventResponse>, t: Throwable) {
+            override fun onFailure(call: Call<EventResponse> , t: Throwable) {
                 _isLoadingFinished.value = false
                 _errorMessage.value = "Network error: ${t.message}"
             }
