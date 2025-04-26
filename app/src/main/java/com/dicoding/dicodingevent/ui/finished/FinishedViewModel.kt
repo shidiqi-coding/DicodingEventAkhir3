@@ -2,21 +2,18 @@ package com.dicoding.dicodingevent.ui.finished
 
 
 import android.util.Log
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dicoding.dicodingevent.EventRepository
 import com.dicoding.dicodingevent.data.response.EventResponse
-//import com.dicoding.dicodingevent.data.response.EventResponse
 import com.dicoding.dicodingevent.data.response.ListEventsItem
-import com.dicoding.dicodingevent.data.retrofit.ApiConfig
 
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class FinishedViewModel(private val repository: EventRepository): ViewModel() {
+class FinishedViewModel(private val repository: EventRepository) : ViewModel() {
 
     private val _eventlist = MutableLiveData<List<ListEventsItem>>()
     val eventlist: LiveData<List<ListEventsItem>> = _eventlist
@@ -32,14 +29,14 @@ class FinishedViewModel(private val repository: EventRepository): ViewModel() {
     }
 
     init {
-        fetchEvents(active = 0 , query = null) // Fetch upcoming events by default
+        fetchEvents(query = null)
     }
 
-    private fun fetchEvents(active: Int , query: String?) {
+    private fun fetchEvents(query: String?) {
         _loading.value = true
         _error.value = null
 
-        val call = ApiConfig.getApiService().getEvent(active = active , q = query)
+        val call = repository.getFinishedEventsCallback(query)
         call.enqueue(object : Callback<EventResponse> {
             override fun onResponse(call: Call<EventResponse> , response: Response<EventResponse>) {
                 if (response.isSuccessful) {
@@ -51,7 +48,6 @@ class FinishedViewModel(private val repository: EventRepository): ViewModel() {
                 _loading.value = false
             }
 
-
             override fun onFailure(call: Call<EventResponse> , t: Throwable) {
                 _error.value = "Network error: ${t.message}"
                 Log.e(TAG , "onFailure: ${t.message}")
@@ -61,22 +57,13 @@ class FinishedViewModel(private val repository: EventRepository): ViewModel() {
     }
 
     fun fetchFinishedEvents() {
-        fetchEvents(active = 0 , query = null)
+        fetchEvents(query = null)
     }
 
-//    fun fetchAllEvents() {
-//        fetchEvents(active = -1 , query = null)
-//    }
 
     fun searchEvents(query: String) {
-        fetchEvents(active = 0 , query = query)
+        fetchEvents(query = query)
     }
 
 }
-
-
-
-
-
-
 
