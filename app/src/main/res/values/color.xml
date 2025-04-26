@@ -2,4 +2,5 @@
 <resources>
     <color name ="splash_background">#FFFFFF</color>
     <color name ="text_splash_color">#000000</color>
+    <color name="cancel_button_color">#000000</color>
 </resources>
