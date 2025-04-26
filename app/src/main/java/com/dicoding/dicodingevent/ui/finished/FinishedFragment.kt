@@ -8,12 +8,12 @@ import android.view.ViewGroup
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-//import com.dicoding.dicodingevent.R
 
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.dicoding.dicodingevent.ListEventAdapter
 
 import com.dicoding.dicodingevent.databinding.FragmentFinishedBinding
+import com.dicoding.dicodingevent.ui.ViewModelFactory
 import com.dicoding.dicodingevent.ui.detail.DetailActivity
 
 
@@ -22,7 +22,11 @@ class FinishedFragment : Fragment() {
     //
     private var _binding: FragmentFinishedBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: FinishedViewModel by viewModels()
+    private val viewModel: FinishedViewModel by viewModels {
+        ViewModelFactory.getInstance(
+            requireContext()
+        )
+    }
     private lateinit var adapter: ListEventAdapter
 
     override fun onCreateView(
@@ -59,7 +63,7 @@ class FinishedFragment : Fragment() {
     private fun setupSearchView() {
         with(binding) {
             searchView.setupWithSearchBar(searchBar)
-            searchView.editText.setOnEditorActionListener { textView, actionId, event ->
+            searchView.editText.setOnEditorActionListener { textView , actionId , event ->
                 searchBar.setText(searchView.text)
                 searchView.hide()
                 viewModel.searchEvents(searchView.text.toString())
@@ -71,22 +75,20 @@ class FinishedFragment : Fragment() {
 
 
     private fun observeViewModel() {
-        viewModel.eventlist.observe(viewLifecycleOwner)  {events ->
+        viewModel.eventlist.observe(viewLifecycleOwner) { events ->
             adapter.submitList(events)
         }
 
-        viewModel.loading.observe(viewLifecycleOwner) {loading ->
+        viewModel.loading.observe(viewLifecycleOwner) { loading ->
             showLoading(loading)
         }
-
 
 
     }
 
 
-
-    private fun showLoading(loading: Boolean){
-        binding.finishedPB.visibility = if(loading) View.VISIBLE else View.GONE
+    private fun showLoading(loading: Boolean) {
+        binding.finishedPB.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
 }
