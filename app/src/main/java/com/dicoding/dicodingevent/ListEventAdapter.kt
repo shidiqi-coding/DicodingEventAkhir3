@@ -11,10 +11,9 @@ import com.bumptech.glide.Glide
 import com.dicoding.dicodingevent.databinding.ItemListBinding
 import com.dicoding.dicodingevent.ui.detail.DetailActivity
 
-//import com.dicoding.dicodingevent.ui.home.HomeFinishedEventAdapter.EventViewHolder
 
-class ListEventAdapter(private val onItemClicked : (String) -> Unit ) :
-    ListAdapter<ListEventsItem, ListEventAdapter.EventViewHolder>(EventDiffCallback()) {
+class ListEventAdapter(private val onItemClicked: (String) -> Unit) :
+    ListAdapter<ListEventsItem , ListEventAdapter.EventViewHolder>(EventDiffCallback()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup ,
@@ -29,7 +28,7 @@ class ListEventAdapter(private val onItemClicked : (String) -> Unit ) :
         val event = getItem(position)
         holder.bind(event)
         holder.itemView.setOnClickListener {
-            event.id.toString().let { id-> onItemClicked(id) }
+            event.id.toString().let { id -> onItemClicked(id) }
         }
     }
 
@@ -75,4 +74,3 @@ class ListEventAdapter(private val onItemClicked : (String) -> Unit ) :
 
 
 
-// }
