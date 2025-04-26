@@ -37,7 +37,7 @@ class DetailViewModel(private val favoriteEventDao: FavoriteEventDao) : ViewMode
         val client = ApiConfig.getApiService().getDetailEvents(id)
         client.enqueue(object : Callback<DetailEventResponse> {
             override fun onResponse(
-                call: Call<DetailEventResponse>,
+                call: Call<DetailEventResponse> ,
                 response: Response<DetailEventResponse>
             ) {
                 _isLoading.value = false
@@ -46,7 +46,7 @@ class DetailViewModel(private val favoriteEventDao: FavoriteEventDao) : ViewMode
                     if (detailEventResponse != null && !detailEventResponse.error) {
                         _detailEvent.value = detailEventResponse.event
                         checkIfFavorite(detailEventResponse.event.id.toLong())
-                        Log.d(TAG, "Event details fetched successfully")
+                        Log.d(TAG , "Event details fetched successfully")
                     } else {
                         _errorMessage.value =
                             detailEventResponse?.message ?: "Unknown error occurred"
@@ -56,8 +56,8 @@ class DetailViewModel(private val favoriteEventDao: FavoriteEventDao) : ViewMode
                 }
             }
 
-            override fun onFailure(call: Call<DetailEventResponse>, t: Throwable) {
-                Log.e(TAG, "API call failed: ${t.message}")
+            override fun onFailure(call: Call<DetailEventResponse> , t: Throwable) {
+                Log.e(TAG , "API call failed: ${t.message}")
                 _isLoading.value = false
                 _errorMessage.value = "Error: ${t.message}"
             }
