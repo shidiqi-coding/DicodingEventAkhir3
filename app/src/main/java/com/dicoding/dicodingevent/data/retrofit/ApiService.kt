@@ -1,13 +1,9 @@
 package com.dicoding.dicodingevent.data.retrofit
 
 
-//import com.dicoding.dicodingevent.data.response.DailyReminderEventsItem
-//import com.dicoding.dicodingevent.data.response.DailyReminderResponse
 import com.dicoding.dicodingevent.data.response.DetailEventResponse
 import com.dicoding.dicodingevent.data.response.EventResponse
 import com.dicoding.dicodingevent.data.response.NotificationEventResponse
-//import com.dicoding.dicodingevent.data.response.EventResponse
-//import com.dicoding.dicodingevent.data.response.SearchEventResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -16,7 +12,7 @@ import retrofit2.http.Query
 interface ApiService {
     @GET("events")
     fun getEvent(
-        @Query("active") active: Int ,
+        @Query("active") active: Int? ,
         @Query("q") q: String? ,
 
         ): Call<EventResponse>
@@ -30,8 +26,5 @@ interface ApiService {
             @Query("active") active : Int
         ): Call<NotificationEventResponse>
 
-//        @GET("events/search")
-//        fun searchEvents(
-//            @Query("query") query: String
-//        ): Call<SearchEventResponse>
+
 }
