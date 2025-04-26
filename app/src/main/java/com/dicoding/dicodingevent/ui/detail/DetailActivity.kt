@@ -47,7 +47,7 @@ class DetailActivity : AppCompatActivity() {
 
 
 
-        viewModel = ViewModelProvider(this, factory)[DetailViewModel::class.java]
+        viewModel = ViewModelProvider(this , factory)[DetailViewModel::class.java]
 
         supportActionBar?.setDisplayShowHomeEnabled(false)
         supportActionBar?.setHomeAsUpIndicator(null)
@@ -60,17 +60,17 @@ class DetailActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
-    setupFabAnimation()
-    setupFavoriteButton()
-    setEventData()
+        setupFabAnimation()
+        setupFavoriteButton()
+        setEventData()
 
-    viewModel.getDetailEvents(eventId)
+        viewModel.getDetailEvents(eventId)
 
         viewModel.isFavorite.observe(this) { favorite ->
             isFavorite = favorite
             updateFavoriteButton(isFavorite)
         }
-}
+    }
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressedDispatcher.onBackPressed()
@@ -88,15 +88,14 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setupFavoriteButton() {
-        binding.fabFavorite.setOnClickListener{
+        binding.fabFavorite.setOnClickListener {
             viewModel.detailEvent.value?.let { event ->
-                val favoriteEvent = FavoriteEvent (
+                val favoriteEvent = FavoriteEvent(
                     id = event.id.toLong() ,
-                    name = event.name,
+                    name = event.name ,
                     mediaCover = event.mediaCover
                 )
                 viewModel.toggleFavorite(favoriteEvent)
-                updateFavoriteButton(isFavorite)
 
 
             }
@@ -156,7 +155,7 @@ class DetailActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val EXTRA_EVENT_ID = "event_id"
+        const val EXTRA_EVENT_ID = "EVENT_ID"
 
         fun start(context: Context , eventId: String) {
             val intent = Intent(context , DetailActivity::class.java)
