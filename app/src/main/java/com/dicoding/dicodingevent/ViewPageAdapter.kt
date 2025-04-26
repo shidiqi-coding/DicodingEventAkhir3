@@ -14,7 +14,7 @@ import com.dicoding.dicodingevent.ui.upcoming.UpcomingFragment
 class ViewPagerAdapter(activity: MainActivity) : FragmentStateAdapter(activity) {
     override fun getItemCount(): Int = 5
 
-    override fun createFragment(position: Int): Fragment{
+    override fun createFragment(position: Int): Fragment {
         return when (position) {
             0 -> HomeFragment()
             1 -> UpcomingFragment()
