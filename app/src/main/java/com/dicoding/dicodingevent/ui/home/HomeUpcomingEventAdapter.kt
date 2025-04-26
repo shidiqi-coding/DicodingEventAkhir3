@@ -10,7 +10,7 @@ import com.dicoding.dicodingevent.databinding.ItemHorizontalUpcomingBinding
 import com.dicoding.dicodingevent.data.response.ListEventsItem
 
 class HomeUpcomingEventAdapter(private val onItemClick: (ListEventsItem) -> Unit) :
-    ListAdapter<ListEventsItem, HomeUpcomingEventAdapter.EventViewHolder>(EventDiffCallBack()) {
+    ListAdapter<ListEventsItem , HomeUpcomingEventAdapter.EventViewHolder>(EventDiffCallBack()) {
 
     override fun onCreateViewHolder(parent: ViewGroup , viewType: Int): EventViewHolder {
         val binding = ItemHorizontalUpcomingBinding.inflate(
@@ -18,18 +18,19 @@ class HomeUpcomingEventAdapter(private val onItemClick: (ListEventsItem) -> Unit
             parent ,
             false
         )
-        return EventViewHolder(binding,onItemClick)
+        return EventViewHolder(binding , onItemClick)
     }
 
     override fun onBindViewHolder(holder: EventViewHolder , position: Int) {
         val event = getItem(position)
         holder.bind(event)
-//        holder.itemView.setOnClickListener {
-//            event.id?.toString()?.let { id -> onItemClick(id) } // Memastikan id tidak null
-//        }
+
     }
 
-    class EventViewHolder(private val binding: ItemHorizontalUpcomingBinding, private val onItemClick: (ListEventsItem) -> Unit) :
+    class EventViewHolder(
+        private val binding: ItemHorizontalUpcomingBinding ,
+        private val onItemClick: (ListEventsItem) -> Unit
+    ) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(event: ListEventsItem) {
             with(binding) {
